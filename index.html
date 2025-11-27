@@ -24,7 +24,7 @@
     .layout{display:grid;grid-template-columns:260px 1fr;gap:20px;padding:22px;align-items:start}
     .sidebar{background:var(--sidebar-bg);border-radius:12px;padding:18px;height:calc(100vh - 44px);position:sticky;top:22px;overflow:auto;color:var(--sidebar-text);}
     .brand{display:flex;align-items:center;gap:12px;margin-bottom:18px}
-    .logo{width:44px;height:44px;border-radius:10px;background:linear-gradient(135deg,var(--accent),#06b6d4);display:flex;align-items:center;justify-content:center;font-weight:700}
+    .logo{width:44px;height:44px;border-radius:10px;overflow:hidden;display:flex;align-items:center;justify-content:center;background:none}
     .nav{margin-top:8px}
     .nav a{display:flex;gap:10px;padding:10px;border-radius:8px;color:var(--sidebar-text);font-weight:500;text-decoration:none;margin-bottom:6px;align-items:center;transition:background 0.2s, transform 0.2s;}
     .nav a.active{background:rgba(124,58,237,0.15);color:var(--accent);font-weight:700;}
@@ -42,12 +42,12 @@
     .muted{color:var(--muted)}
     .widget-row{display:flex;gap:12px}
     .widget{flex:1;padding:12px;border-radius:8px;background:linear-gradient(180deg, rgba(255,255,255,0.015), transparent);border:1px solid rgba(255,255,255,0.02)}
-    .btn{background:var(--accent);border:none;color:white;padding:8px 10px;border-radius:8px;cursor:pointer}
-    .btn{background:transparent;border:1px solid var(--glass-2);color:var(--muted)}
+    .btn{background:var(--accent);border:none;color:white;padding:8px 10px;border-radius:8px;cursor:pointer !important}
+    .btn-outline{background:transparent;border:1px solid var(--glass-2);color:var(--muted)}
     .profile{display:flex;gap:12px;align-items:center}
     .avatar{width:56px;height:56px;border-radius:10px;background:linear-gradient(135deg,#fff2, #fff1);display:flex;align-items:center;justify-content:center;color:#071024;font-weight:700}
     .list{display:flex;flex-direction:column;gap:8px}
-    .list-item{display:flex;justify-content:space-between;align-items:center;padding:8px;border-radius:8px;background:var(--glass);color:#1e293b}
+    .list-item{display:flex;justify-content:space-between;align-items:center;padding:8px;border-radius:8px;background:rgba(0,0,0,0.05);border:1px solid rgba(0,0,0,0.08);color:#1e293b}
     .badge{background:rgba(255,255,255,0.03);padding:6px 8px;border-radius:999px;font-size:12px}
     .timeline{display:flex;flex-direction:column;gap:8px}
     .chip{display:inline-block;padding:6px 10px;border-radius:999px;background:rgba(255,255,255,0.02);font-size:13px}
@@ -64,11 +64,20 @@
     table{width:100%;border-collapse:separate;border-spacing:0 6px;}
     th,td{padding:8px;text-align:left;border-bottom:1px dashed rgba(255,255,255,0.03)}
   /* dark mode */
-    body.dark{background:#0f1724;color:#e2e8f0}
+body.dark .small,
+body.dark .muted,
+body.dark .badge,
+body.dark .chip,
+body.dark .list-item,
+body.dark th,
+body.dark td {
+  color:#f1f5f9 !important;
+}
+    body.dark{color:#e2e8f0;} body.dark #collapseBtnToggle{color:#ffffff !important;} body.dark{background:#0f1724;color:#e2e8f0}
     body.dark .card{background:#0b1220;border-color:#1e2636;color:#e6eef8}
     body.dark .sidebar{background:linear-gradient(180deg,#1b0a33,#0a2b3d);color:#e2e8f0}
     body.dark .nav a{color:#e2e8f0}
-    body.dark .nav a.active{background:rgba(255,255,255,0.15);color:#90caf9}
+    body.dark .nav a.active{background:rgba(255,255,255,0.25);color:#a3d8ff}
     
     /* modal */
     .vh-modal-backdrop{position:fixed;inset:0;background:rgba(2,6,23,0.5);display:flex;align-items:center;justify-content:center;z-index:1200;opacity:0;pointer-events:none;transition:opacity .18s}
@@ -85,12 +94,42 @@
     .slider:before{position:absolute;content:"";height:18px;width:18px;left:3px;bottom:3px;background:white;border-radius:50%;transition:.2s;}
     input:checked + .slider{background:var(--accent);} 
     input:checked + .slider:before{transform:translateX(22px);} 
-  </style>
+  
+    }
+    .sidebar.collapsed .brand{justify-content:center}
+    .sidebar.collapsed .profile{justify-content:center}
+    .sidebar.collapsed{width:70px !important;}
+    .layout.sidebar-collapsed{grid-template-columns:70px 1fr !important;}
+    .sidebar.collapsed .brand > div:last-child{display:none !important;}
+.sidebar.collapsed .profile > div:last-child{display:none !important;}
+.sidebar.collapsed .list{display:none !important;}
+.sidebar.collapsed .small.muted{display:none !important;}
+.sidebar.collapsed{width:70px !important;}
+.layout.sidebar-collapsed{grid-template-columns:70px 1fr !important;}
+body.dark .list-item{background:rgba(255,255,255,0.06)!important;border:1px solid rgba(255,255,255,0.12)!important;color:#f1f5f9!important}
+/* Button hover (light + dark mode aware) */
+.btn:hover{filter:brightness(1.1);transform:translateY(-1px);box-shadow:0 3px 8px rgba(0,0,0,0.15);}
+body.dark .btn:hover{filter:brightness(1.25);box-shadow:0 3px 8px rgba(255,255,255,0.12);} 
+
+/* Module-colored accents */
+.btn[data-module="ta"]{background:#06b6d4 !important;}       /* Time & Attendance */
+.btn[data-module="payroll"]{background:#e11d48 !important;}  /* Payroll */
+.btn[data-module="perf"]{background:#7c3aed !important;}     /* Performance */
+.btn[data-module="recruit"]{background:#0ea5e9 !important;}  /* Recruitment */
+.btn[data-module="docs"]{background:#059669 !important;}      /* Documents */
+
+.btn[data-module]:hover{filter:brightness(1.15);} 
+
+/* Disabled state styling */
+.btn:disabled{opacity:0.55 !important;cursor:not-allowed !important;box-shadow:none !important;transform:none !important;}
+btn:disabled:hover{filter:none !important;}
+</style>
 </head>
 <body>
   <div class="layout">
     <aside class="sidebar card">
-      <div class="brand"><div class="logo">VH</div><div><div style="font-weight:700">Vision Hub</div><div class="small muted">HRIS</div></div></div>
+      <div class="brand"><!-- Replace 'logo.png' with your actual logo file path -->
+<div class="logo"><img src="logo.png" alt="Logo" style="width:100%;height:100%;object-fit:cover;border-radius:10px"></div><div><div style="font-weight:700">Vision Hub</div><div class="small muted">HRIS</div></div></div>
       <div class="profile" style="margin-bottom:12px">
         <div class="avatar">CB</div>
         <div>
@@ -118,8 +157,8 @@
         <div class="small muted">Quick Links</div>
         <div class="list" style="margin-top:8px">
           <div class="list-item"><div>Clock In</div><div><button class="btn">Go</button></div></div>
-          <div class="list-item"><div>Request PTO</div><div><button class="btn-outline">Open</button></div></div>
-          <div class="list-item"><div>Upload Doc</div><div><button class="btn-outline">Upload</button></div></div>
+          <div class="list-item"><div>Request PTO</div><div><button class="btn">Open</button></div></div>
+          <div class="list-item"><div>Upload Doc</div><div><button class="btn">Upload</button></div></div>
         </div>
       </div>
 
@@ -151,7 +190,7 @@
               <div class="big">Hello, Christian 👋</div>
             </div>
             <div style="display:flex;gap:8px;align-items:center">
-              <button class="btn-outline">Export</button>
+              <button class="btn">Export</button>
               <button class="btn">New Request</button>
             </div>
           </div>
@@ -166,7 +205,7 @@
                 </div>
                 <div class="mini-graph"></div>
               </div>
-              <div style="margin-top:10px;display:flex;gap:8px"><button class="btn">View Payslip</button><button class="btn-outline">Payroll History</button></div>
+              <div style="margin-top:10px;display:flex;gap:8px"><button class="btn">View Payslip</button><button class="btn">Payroll History</button></div>
             </div>
 
             <div class="widget">
@@ -180,7 +219,7 @@
               <div class="small muted">Upcoming Shift</div>
               <div style="font-weight:700;margin-top:8px">Mon • 09:00 — 18:00</div>
               <div class="small muted">Role: Events Support</div>
-              <div style="margin-top:10px"><button class="btn-outline">View Schedule</button></div>
+              <div style="margin-top:10px"><button class="btn">View Schedule</button></div>
             </div>
           </div>
 
@@ -295,162 +334,126 @@
   </div>
 
   <script>
-document.addEventListener('DOMContentLoaded', () => {
-  // store initial main HTML so we can restore Dashboard
-  const mainEl = document.querySelector('main');
-  const initialMainHTML = mainEl.innerHTML;
+// Cleaned full script without regex literals to avoid replacement issues
+document.addEventListener('DOMContentLoaded', function () {
+  var layout = document.querySelector('.layout');
+  var sidebar = document.querySelector('.sidebar');
+  var collapseBtn = document.getElementById('collapseBtnToggle');
+  var mainEl = document.querySelector('main');
+  var initialMainHTML = mainEl ? mainEl.innerHTML : '';
 
-  // Timesheet sample data
-  const sampleTimes = [
+  var sampleTimes = [
     {d: '2025-11-30', in: '08:55', out: '18:03', h: 8.1, status: 'Approved'},
     {d: '2025-11-29', in: '09:12', out: '17:58', h: 7.7, status: 'Approved'},
     {d: '2025-11-28', in: '09:00', out: '18:22', h: 8.36, status: 'Pending'},
     {d: '2025-11-27', in: '09:04', out: '17:50', h: 7.76, status: 'Approved'}
   ];
 
-  // utility: mask/unmask text of elements without using backslash escapes
-  function maskElements(list) {
-    list.forEach(el => {
-      if (!el.dataset.realValue) el.dataset.realValue = el.textContent;
-      const chars = Array.from(el.textContent);
-      el.textContent = chars.map(c => c === ' ' ? ' ' : '*').join('');
-    });
-  }
-  function unmaskElements(list) {
-    list.forEach(el => {
-      if (el.dataset.realValue) el.textContent = el.dataset.realValue;
-    });
-  }
-
-  // render timesheets into current DOM (expects #timesheetBody to exist)
-  function renderTimesheets() {
-    const body = document.getElementById('timesheetBody');
-    if (!body) return;
+  function renderTimesheets(){
+    var body = document.getElementById('timesheetBody');
+    if(!body) return;
     body.innerHTML = '';
-    sampleTimes.forEach(r => {
-      const tr = document.createElement('tr');
-      tr.innerHTML = '<td>' + r.d + '</td><td>' + r.in + '</td><td>' + r.out + '</td><td>' + r.h + '</td><td>' + r.status + '</td>';
+    sampleTimes.forEach(function(r){
+      var tr = document.createElement('tr');
+      tr.innerHTML = '<td>'+r.d+'</td><td>'+r.in+'</td><td>'+r.out+'</td><td>'+r.h+'</td><td>'+r.status+'</td>';
       body.appendChild(tr);
     });
   }
 
-  // initialize widgets inside main (called on load and when restoring Dashboard)
-  function initMainWidgets() {
+  // Mask/unmask currency-prefixed text without using regex literals
+  function isCurrencyPrefixed(txt){
+    if(!txt) return false;
+    var t = txt.trim();
+    var prefixes = ['₱','$','€','¥','PHP','USD','EUR'];
+    for(var i=0;i<prefixes.length;i++){
+      if(t.indexOf(prefixes[i]) === 0) return true;
+    }
+    return false;
+  }
+  function splitCurrency(txt){
+    var t = txt.trim();
+    var prefixes = ['₱','$','€','¥','PHP','USD','EUR'];
+    for(var i=0;i<prefixes.length;i++){
+      var p = prefixes[i];
+      if(t.indexOf(p) === 0){
+        var rest = t.slice(p.length).trim();
+        return {prefix: p, rest: rest};
+      }
+    }
+    return null;
+  }
+
+  function maskCurrencyElements(elems){
+    elems.forEach(function(el){
+      var txt = (el.dataset.realValue !== undefined) ? el.dataset.realValue : el.textContent.trim();
+      if(el.dataset.realValue === undefined) el.dataset.realValue = txt;
+      if(!isCurrencyPrefixed(txt)) return;
+      var parts = splitCurrency(txt);
+      if(!parts) return;
+      var masked = '';
+      for(var i=0;i<parts.rest.length;i++){
+        var ch = parts.rest.charAt(i);
+        masked += (ch >= '0' && ch <= '9') ? '*' : ch;
+      }
+      el.textContent = parts.prefix + ' ' + masked;
+    });
+  }
+  function unmaskCurrencyElements(elems){
+    elems.forEach(function(el){ if(el.dataset.realValue !== undefined) el.textContent = el.dataset.realValue; });
+  }
+
+  function initMainWidgets(){
     renderTimesheets();
 
-    // clock button
-    const clockBtn = document.getElementById('clockBtn');
-    if (clockBtn) {
-      let clockedIn = false;
-      clockBtn.addEventListener('click', () => {
-        clockedIn = !clockedIn;
-        clockBtn.textContent = clockedIn ? 'Clock Out' : 'Clock In';
-        alert(clockedIn ? 'Clocked in at ' + new Date().toLocaleTimeString() : 'Clocked out at ' + new Date().toLocaleTimeString());
-      });
+    var clockBtn = document.getElementById('clockBtn');
+    if(clockBtn && !clockBtn._init){
+      clockBtn._init = true;
+      var clockedIn = false;
+      clockBtn.addEventListener('click', function(){ clockedIn = !clockedIn; clockBtn.textContent = clockedIn ? 'Clock Out' : 'Clock In'; });
     }
 
-    // hide/show pay summary (mask numeric values with asterisks)
-    const hidePayBtn = document.getElementById('hidePayBtn');
-    if (hidePayBtn) {
-      let hidden = false;
-      const paySelector = '.widget [style*="font-size:18px"], .col-span-4 table td:nth-child(2), .col-span-4 table td:nth-child(1), .card table td:nth-child(2)';
-      hidePayBtn.addEventListener('click', () => {
-        const elems = Array.from(document.querySelectorAll(paySelector)).filter(el => /[0-9]/.test(el.textContent));
-        hidden = !hidden;
-        if (hidden) maskElements(elems); else unmaskElements(elems);
-        hidePayBtn.textContent = hidden ? 'Show' : 'Hide';
-      });
+    var hidePayBtn = document.getElementById('hidePayBtn');
+    if(hidePayBtn && !hidePayBtn._init){
+      hidePayBtn._init = true;
+      var selector = '.widget [style*="font-size:18px"], .col-span-4 table td:nth-child(2), .card table td:nth-child(2)';
+      var elems = Array.prototype.slice.call(document.querySelectorAll(selector));
+      elems = elems.filter(function(el){ return isCurrencyPrefixed((el.textContent||'').trim()); });
+      var hidden = true;
+      if(hidden) maskCurrencyElements(elems);
+      hidePayBtn.textContent = hidden ? 'Show' : 'Hide';
+      hidePayBtn.addEventListener('click', function(){ hidden = !hidden; if(hidden) maskCurrencyElements(elems); else unmaskCurrencyElements(elems); hidePayBtn.textContent = hidden ? 'Show' : 'Hide'; });
     }
 
-    // resources / list items open coming-soon modal instead of navigating
-    Array.from(document.querySelectorAll('.card a, .list-item')).forEach(el => {
-      el.addEventListener('click', (e) => {
-        if (e.target.tagName === 'BUTTON') return;
-        e.preventDefault();
-        showModal((el.textContent || el.innerText || 'Item').trim(), 'Coming soon — this content is a placeholder for testing.');
-      });
-    });
+    var listElems = Array.prototype.slice.call(document.querySelectorAll('.card a, .list-item'));
+    listElems.forEach(function(el){ if(el._bound) return; el._bound = true; el.addEventListener('click', function(e){ if(e.target.tagName === 'BUTTON') return; e.preventDefault(); showModal((el.textContent||el.innerText||'Item').trim(), 'Coming soon — this content is a placeholder for testing.'); }); });
   }
 
-  // create a reusable modal
-  function showModal(title, body) {
-    let backdrop = document.querySelector('.vh-modal-backdrop');
-    if (!backdrop) {
-      backdrop = document.createElement('div');
-      backdrop.className = 'vh-modal-backdrop';
-      backdrop.innerHTML = '<div class="vh-modal"><h3></h3><p></p><div class="actions"><button id="vhClose" class="btn">Close</button></div></div>';
-      document.body.appendChild(backdrop);
-      backdrop.addEventListener('click', (e) => { if (e.target === backdrop) hideModal(); });
-      backdrop.querySelector('#vhClose').addEventListener('click', hideModal);
-    }
-    backdrop.querySelector('h3').textContent = title;
-    backdrop.querySelector('p').textContent = body;
-    backdrop.classList.add('show');
+  function showModal(title, body){
+    var backdrop = document.querySelector('.vh-modal-backdrop');
+    if(!backdrop){ backdrop = document.createElement('div'); backdrop.className='vh-modal-backdrop'; backdrop.innerHTML = '<div class="vh-modal"><h3></h3><p></p><div class="actions"><button id="vhClose" class="btn">Close</button></div></div>'; document.body.appendChild(backdrop); backdrop.addEventListener('click', function(e){ if(e.target===backdrop) hideModal(); }); backdrop.querySelector('#vhClose').addEventListener('click', hideModal); }
+    backdrop.querySelector('h3').textContent = title; backdrop.querySelector('p').textContent = body; backdrop.classList.add('show');
   }
-  function hideModal() { const b = document.querySelector('.vh-modal-backdrop'); if (b) b.classList.remove('show'); }
+  function hideModal(){ var b=document.querySelector('.vh-modal-backdrop'); if(b) b.classList.remove('show'); }
 
-  // dark mode switch (insert switch into topbar)
-  const topbarLeft = document.querySelector('.topbar > div');
-  if (topbarLeft) {
-    const switchWrap = document.createElement('div');
-    switchWrap.style.marginLeft = '12px';
-    switchWrap.innerHTML = '<label class="vh-switch" title="Toggle dark mode"><input id="dmSwitch" type="checkbox"><span class="slider"></span></label>';
-    topbarLeft.appendChild(switchWrap);
-    const dmSwitch = document.getElementById('dmSwitch');
-    dmSwitch.addEventListener('change', () => { document.body.classList.toggle('dark', dmSwitch.checked); });
+  function initDarkSwitch(){
+    var topbarLeft = document.querySelector('.topbar > div');
+    if(!topbarLeft) return; if(document.getElementById('dmSwitch')) return;
+    var wrap = document.createElement('div'); wrap.style.marginLeft='12px'; wrap.innerHTML = '<label class="vh-switch" title="Toggle dark mode"><input id="dmSwitch" type="checkbox"><span class="slider"></span></label>'; topbarLeft.appendChild(wrap);
+    var dmSwitch = document.getElementById('dmSwitch'); dmSwitch.addEventListener('change', function(){ document.body.classList.toggle('dark', dmSwitch.checked); });
   }
 
-  // collapse sidebar logic
-  const sidebar = document.querySelector('.sidebar');
-  const collapseBtn = document.getElementById('collapseBtnToggle');
-  if (collapseBtn && sidebar) {
-    collapseBtn.style.border = 'none';
-    collapseBtn.style.background = 'transparent';
-    collapseBtn.style.padding = '8px';
-    collapseBtn.style.cursor = 'pointer';
-    collapseBtn.addEventListener('click', () => {
-      const collapsed = !sidebar.classList.contains('collapsed');
-      sidebar.classList.toggle('collapsed', collapsed);
-      Array.from(document.querySelectorAll('.nav a span')).forEach(s => s.style.display = collapsed ? 'none' : 'inline');
-      sidebar.style.width = collapsed ? '70px' : '260px';
-      collapseBtn.textContent = collapsed ? '➡ Expand' : '⬅ Collapse';
-    });
+  function initCollapse(){
+    if(!collapseBtn || !sidebar) return; if(collapseBtn._init) return; collapseBtn._init = true;
+    collapseBtn.style.border='none'; collapseBtn.style.background='transparent'; collapseBtn.style.padding='8px'; collapseBtn.style.cursor='pointer';
+    collapseBtn.addEventListener('click', function(){ var collapsed = !sidebar.classList.contains('collapsed'); sidebar.classList.toggle('collapsed', collapsed); if(layout) layout.classList.toggle('sidebar-collapsed', collapsed); Array.prototype.slice.call(document.querySelectorAll('.nav a span')).forEach(function(s){ s.style.display = collapsed ? 'none' : 'inline'; }); collapseBtn.textContent = collapsed ? '➡' : '⬅ Collapse'; });
   }
 
-  // navigation: clicking a sidebar item swaps main content to a coming-soon page
-  function loadComingSoonPage(title) {
-    mainEl.innerHTML = '<div style="padding:40px;text-align:center;">' +
-      '<h1 style="font-size:32px;margin-bottom:12px;">' + title + '</h1>' +
-      '<p style="font-size:18px;color:var(--muted)">Coming soon — this page is under development.</p>' +
-      '</div>';
-    window.scrollTo(0,0);
+  function initNavigation(){
+    Array.prototype.slice.call(document.querySelectorAll('.nav a')).forEach(function(a){ if(a._init) return; a._init = true; a.addEventListener('click', function(e){ e.preventDefault(); var span = a.querySelector('span'); var label = span ? span.textContent.trim() : a.textContent.trim(); Array.prototype.slice.call(document.querySelectorAll('.nav a')).forEach(function(n){ n.classList.remove('active'); }); a.classList.add('active'); if(label === 'Dashboard'){ if(mainEl) mainEl.innerHTML = initialMainHTML; initMainWidgets(); return; } if(mainEl) mainEl.innerHTML = '<div style="padding:40px;text-align:center;"><h1 style="font-size:32px;margin-bottom:12px;">'+label+'</h1><p style="font-size:18px;color:var(--muted)">Coming soon — this page is under development.</p></div>'; window.scrollTo(0,0); }); });
   }
-  Array.from(document.querySelectorAll('.nav a')).forEach(a => {
-    a.addEventListener('click', (e) => {
-      e.preventDefault();
-      const span = a.querySelector('span');
-      const label = span ? span.textContent.trim() : a.textContent.trim();
-      Array.from(document.querySelectorAll('.nav a')).forEach(n => n.classList.remove('active'));
-      a.classList.add('active');
-      if (label === 'Dashboard') {
-        mainEl.innerHTML = initialMainHTML;
-        // re-initialize widgets inside the restored main
-        initMainWidgets();
-        return;
-      }
-      loadComingSoonPage(label);
-    });
-  });
 
-  // initial attach for main widgets
-  initMainWidgets();
-
-  // notifications mail icon behaviour
-  const notifBtn = document.querySelector('.topbar div[style*="width:42px"]');
-  if (notifBtn) {
-    notifBtn.setAttribute('role', 'button');
-    notifBtn.addEventListener('click', () => { showModal('Notifications', 'You have no new messages.'); });
-  }
+  initMainWidgets(); initDarkSwitch(); initCollapse(); initNavigation();
+  var notifBtn = document.querySelector('.topbar div[style*="width:42px"]'); if(notifBtn){ notifBtn.setAttribute('role','button'); notifBtn.addEventListener('click', function(){ showModal('Notifications','You have no new messages.'); }); }
 
 });
 </script>
