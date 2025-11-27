@@ -1,0 +1,458 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Vision Hub HRIS — Mockup</title>
+  <style>
+    :root{
+      --bg:#f5f7fa;
+      --text:#1e293b;
+      --text-muted:#475569;
+      --sidebar-text:#1e293b;
+      --sidebar-bg:linear-gradient(180deg,#e7e9f0,#d6d9e4);
+      --card:#ffffff;
+      --muted:#475569;
+      --accent:#7c3aed;
+      --accent-2:#06b6d4;
+      --glass:rgba(0,0,0,0.03);
+      --glass-2:rgba(0,0,0,0.08);
+      font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--bg);color:var(--text);min-height:100vh}
+    .layout{display:grid;grid-template-columns:260px 1fr;gap:20px;padding:22px;align-items:start}
+    .sidebar{background:var(--sidebar-bg);border-radius:12px;padding:18px;height:calc(100vh - 44px);position:sticky;top:22px;overflow:auto;color:var(--sidebar-text);}
+    .brand{display:flex;align-items:center;gap:12px;margin-bottom:18px}
+    .logo{width:44px;height:44px;border-radius:10px;background:linear-gradient(135deg,var(--accent),#06b6d4);display:flex;align-items:center;justify-content:center;font-weight:700}
+    .nav{margin-top:8px}
+    .nav a{display:flex;gap:10px;padding:10px;border-radius:8px;color:var(--sidebar-text);font-weight:500;text-decoration:none;margin-bottom:6px;align-items:center;transition:background 0.2s, transform 0.2s;}
+    .nav a.active{background:rgba(124,58,237,0.15);color:var(--accent);font-weight:700;}
+    .main{padding:18px;border-radius:12px;background:#ffffff;min-height:calc(100vh - 44px);box-shadow:0 2px 8px rgba(0,0,0,0.05);}
+    .topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+    .search{background:var(--glass);padding:8px 12px;border-radius:999px;color:var(--muted);display:flex;gap:8px;align-items:center}
+    .grid{display:grid;grid-template-columns:repeat(12,1fr);gap:14px}
+    .card{background:#ffffff;padding:14px;border-radius:10px;border:1px solid #e5e7eb;box-shadow:0 1px 3px rgba(0,0,0,0.06);}
+    .col-span-4{grid-column:span 4}
+    .col-span-6{grid-column:span 6}
+    .col-span-8{grid-column:span 8}
+    .col-span-12{grid-column:span 12}
+    .small{font-size:12px;color:var(--muted)}
+    .big{font-size:20px;font-weight:700}
+    .muted{color:var(--muted)}
+    .widget-row{display:flex;gap:12px}
+    .widget{flex:1;padding:12px;border-radius:8px;background:linear-gradient(180deg, rgba(255,255,255,0.015), transparent);border:1px solid rgba(255,255,255,0.02)}
+    .btn{background:var(--accent);border:none;color:white;padding:8px 10px;border-radius:8px;cursor:pointer}
+    .btn{background:transparent;border:1px solid var(--glass-2);color:var(--muted)}
+    .profile{display:flex;gap:12px;align-items:center}
+    .avatar{width:56px;height:56px;border-radius:10px;background:linear-gradient(135deg,#fff2, #fff1);display:flex;align-items:center;justify-content:center;color:#071024;font-weight:700}
+    .list{display:flex;flex-direction:column;gap:8px}
+    .list-item{display:flex;justify-content:space-between;align-items:center;padding:8px;border-radius:8px;background:var(--glass);color:#1e293b}
+    .badge{background:rgba(255,255,255,0.03);padding:6px 8px;border-radius:999px;font-size:12px}
+    .timeline{display:flex;flex-direction:column;gap:8px}
+    .chip{display:inline-block;padding:6px 10px;border-radius:999px;background:rgba(255,255,255,0.02);font-size:13px}
+    .mini-graph{height:40px;background:linear-gradient(90deg,#ffffff10,#ffffff05);border-radius:6px}
+    /* responsive */
+    @media(max-width:980px){.layout{grid-template-columns:1fr;padding:12px}.sidebar{display:none;}}
+
+    /* small interactive touches */
+    .recognition{display:flex;gap:8px;align-items:center}
+    .dot{width:8px;height:8px;border-radius:50%;background:#06b6d4}
+    .toggle{display:inline-flex;align-items:center;gap:8px}
+
+    /* small table */
+    table{width:100%;border-collapse:separate;border-spacing:0 6px;}
+    th,td{padding:8px;text-align:left;border-bottom:1px dashed rgba(255,255,255,0.03)}
+  /* dark mode */
+    body.dark{background:#0f1724;color:#e2e8f0}
+    body.dark .card{background:#0b1220;border-color:#1e2636;color:#e6eef8}
+    body.dark .sidebar{background:linear-gradient(180deg,#1b0a33,#0a2b3d);color:#e2e8f0}
+    body.dark .nav a{color:#e2e8f0}
+    body.dark .nav a.active{background:rgba(255,255,255,0.15);color:#90caf9}
+    
+    /* modal */
+    .vh-modal-backdrop{position:fixed;inset:0;background:rgba(2,6,23,0.5);display:flex;align-items:center;justify-content:center;z-index:1200;opacity:0;pointer-events:none;transition:opacity .18s}
+    .vh-modal-backdrop.show{opacity:1;pointer-events:auto}
+    .vh-modal{background:var(--card);color:inherit;padding:18px;border-radius:10px;min-width:320px;max-width:720px;box-shadow:0 10px 30px rgba(2,6,23,0.3)}
+    .vh-modal h3{margin:0 0 8px 0}
+    .vh-modal p{margin:0 0 12px 0;color:var(--muted)}
+    .vh-modal .actions{display:flex;justify-content:flex-end;gap:8px;margin-top:12px}
+
+  
+    .vh-switch{position:relative;display:inline-block;width:46px;height:24px;}
+    .vh-switch input{opacity:0;width:0;height:0;}
+    .slider{position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;background:#cbd5e1;border-radius:24px;transition:.2s;}
+    .slider:before{position:absolute;content:"";height:18px;width:18px;left:3px;bottom:3px;background:white;border-radius:50%;transition:.2s;}
+    input:checked + .slider{background:var(--accent);} 
+    input:checked + .slider:before{transform:translateX(22px);} 
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar card">
+      <div class="brand"><div class="logo">VH</div><div><div style="font-weight:700">Vision Hub</div><div class="small muted">HRIS</div></div></div>
+      <div class="profile" style="margin-bottom:12px">
+        <div class="avatar">CB</div>
+        <div>
+          <div style="font-weight:700">Christian Bartolome</div>
+          <div class="small muted">QA Tester • Manila</div>
+        </div>
+      </div>
+
+      <nav class="nav">
+        <a href="#" class="active"><i>🏠</i><span>Dashboard</span></a>
+        <a href="#"><i>⏱️</i><span>Time & Attendance</span></a>
+        <a href="#"><i>💰</i><span>Payroll</span></a>
+        <a href="#"><i>⭐</i><span>Performance</span></a>
+        <a href="#"><i>🧑‍💼</i><span>Recruitment</span></a>
+        <a href="#"><i>📄</i><span>Documents</span></a>
+        <a href="#"><i>🌐</i><span>Org Chart</span></a>
+        <a href="#"><i>📊</i><span>Reports</span></a>
+        <a href="#"><i>⚙️</i><span>Settings</span></a>
+        <!-- icons added -->
+        
+      </nav>
+      <button id="collapseBtnToggle" class="btn" style="width:100%;margin-top:12px;color:#1e293b;background:transparent;">⬅ Collapse</button>
+
+      <div style="margin-top:16px">
+        <div class="small muted">Quick Links</div>
+        <div class="list" style="margin-top:8px">
+          <div class="list-item"><div>Clock In</div><div><button class="btn">Go</button></div></div>
+          <div class="list-item"><div>Request PTO</div><div><button class="btn-outline">Open</button></div></div>
+          <div class="list-item"><div>Upload Doc</div><div><button class="btn-outline">Upload</button></div></div>
+        </div>
+      </div>
+
+      <div style="margin-top:18px">
+        <div class="small muted">Environment</div>
+        <div class="chip" style="margin-top:8px">Staging</div>
+      </div>
+    <div id="sidebar-end"></div></aside>
+
+    <main class="main card">
+      <div class="topbar">
+        <div style="display:flex;gap:12px;align-items:center">
+          <div class="search">🔍 <input placeholder="Search people, documents, jobs" style="background:transparent;border:0;outline:none;color:inherit;width:360px" /></div>
+          <div class="chip">EN / PHP ₱</div>
+          <div class="chip">Timezone: Manila</div>
+        </div>
+        <div style="display:flex;gap:12px;align-items:center">
+          <div class="small muted">📧</div>
+          <div style="width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,#334155,#1f2937);display:flex;align-items:center;justify-content:center">CB</div>
+        </div>
+      </div>
+
+      <section class="grid">
+        <!-- Top widgets -->
+        <div class="card col-span-8">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+            <div>
+              <div class="small muted">Welcome back</div>
+              <div class="big">Hello, Christian 👋</div>
+            </div>
+            <div style="display:flex;gap:8px;align-items:center">
+              <button class="btn-outline">Export</button>
+              <button class="btn">New Request</button>
+            </div>
+          </div>
+
+          <div class="widget-row">
+            <div class="widget">
+              <div class="small muted">Pay Summary <button id='hidePayBtn' class='btn' style='margin-left:8px;padding:6px 8px;font-size:12px'>Hide</button></div>
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px">
+                <div>
+                  <div style="font-size:18px;font-weight:700">₱ 48,520</div>
+                  <div class="small muted">Net pay (this period)</div>
+                </div>
+                <div class="mini-graph"></div>
+              </div>
+              <div style="margin-top:10px;display:flex;gap:8px"><button class="btn">View Payslip</button><button class="btn-outline">Payroll History</button></div>
+            </div>
+
+            <div class="widget">
+              <div class="small muted">PTO Balance</div>
+              <div style="font-size:18px;font-weight:700;margin-top:6px">64 hrs</div>
+              <div class="small muted" style="margin-top:6px">Next accrual: 2025-12-01</div>
+              <div style="margin-top:10px"><button class="btn">Request Leave</button></div>
+            </div>
+
+            <div class="widget">
+              <div class="small muted">Upcoming Shift</div>
+              <div style="font-weight:700;margin-top:8px">Mon • 09:00 — 18:00</div>
+              <div class="small muted">Role: Events Support</div>
+              <div style="margin-top:10px"><button class="btn-outline">View Schedule</button></div>
+            </div>
+          </div>
+
+          <div style="margin-top:14px;display:flex;gap:12px">
+            <div style="flex:1" class="card">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+                <div class="small muted">Recognition Feed</div>
+                <div class="small muted">See all</div>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:8px">
+                <div class="recognition"><div class="dot"></div><div><strong>Ana</strong> gave you a Kudos: “Amazing event coordination”</div></div>
+                <div class="recognition"><div class="dot"></div><div><strong>Board</strong> awarded <strong>Top Performer</strong></div></div>
+              </div>
+            </div>
+
+            <div style="width:320px" class="card">
+              <div class="small muted">My Time — Quick Clock</div>
+              <div style="display:flex;gap:8px;margin-top:8px;align-items:center">
+                <div style="flex:1">
+                  <div style="font-weight:700">Ready to clock in</div>
+                  <div class="small muted">Last clock-out: Today • 02:17</div>
+                </div>
+                <div>
+                  <button class="btn" id="clockBtn">Clock In</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right column summary -->
+        <div class="col-span-4 card">
+          <div class="small muted">Profile</div>
+          <div style="display:flex;align-items:center;gap:12px;margin-top:8px">
+            <div class="avatar">CB</div>
+            <div>
+              <div style="font-weight:700">Christian Bartolome</div>
+              <div class="small muted">Events • Level 3</div>
+            </div>
+          </div>
+
+          <hr style="border:none;border-top:1px dashed rgba(255,255,255,0.03);margin:12px 0" />
+
+          <div class="small muted">Quick Stats</div>
+          <div style="display:flex;gap:8px;margin-top:8px">
+            <div style="flex:1;text-align:center;padding:8px;background:var(--glass);border-radius:8px"><div style="font-weight:700">12</div><div class="small muted">Overtime (hrs)</div></div>
+            <div style="flex:1;text-align:center;padding:8px;background:var(--glass);border-radius:8px"><div style="font-weight:700">64</div><div class="small muted">PTO (hrs)</div></div>
+          </div>
+
+          <div style="margin-top:12px">
+            <div class="small muted">Recent Payslips</div>
+            <table style="margin-top:8px">
+              <thead><tr><th>Period</th><th>Net</th></tr></thead>
+              <tbody>
+                <tr><td>Nov 2025</td><td>₱48,520</td></tr>
+                <tr><td>Oct 2025</td><td>₱47,300</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Full width: Timesheets + PTO requests + Recruitment compact -->
+        <div class="col-span-12 card" style="display:flex;gap:12px;flex-direction:column">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <div>
+              <div class="small muted">Timesheets</div>
+              <div style="font-weight:700">Recent time entries</div>
+            </div>
+            <div class="small muted">Period: Nov 1 — Nov 30</div>
+          </div>
+
+          <div style="display:flex;gap:12px;margin-top:12px">
+            <div style="flex:1" class="card">
+              <table>
+                <thead><tr><th>Date</th><th>In</th><th>Out</th><th>Hours</th><th>Status</th></tr></thead>
+                <tbody id="timesheetBody"></tbody>
+              </table>
+            </div>
+
+            <div style="width:360px" class="card">
+              <div class="small muted">Requests</div>
+              <div style="display:flex;flex-direction:column;gap:8px;margin-top:8px">
+                <div class="list-item">PTO • Nov 20-22 <div class="badge">Pending</div></div>
+                <div class="list-item">OT • Nov 18 <div class="badge">Approved</div></div>
+                <div class="list-item">Lunch Adjustment • Nov 12 <div class="badge">Rejected</div></div>
+                <div style="margin-top:10px"><button class="btn">Create Request</button></div>
+              </div>
+            </div>
+          </div>
+
+          <div style="display:flex;gap:12px;margin-top:12px">
+            <div class="card" style="flex:1">
+              <div class="small muted">Recruiting Snapshot</div>
+              <div style="font-weight:700;margin-top:6px">Open positions: 4</div>
+              <div class="small muted" style="margin-top:8px">Pipeline: 34 applicants • 6 interviews</div>
+            </div>
+            <div class="card" style="width:320px">
+              <div class="small muted">Resources</div>
+              <div style="margin-top:8px;display:flex;flex-direction:column;gap:8px">
+                <a class="list-item" href="#">Employee Handbook <div class="small muted">v2.1</div></a>
+                <a class="list-item" href="#">Expense Form <div class="small muted">PDF</div></a>
+                <a class="list-item" href="#">Onboarding Checklist <div class="small muted">8 items</div></a>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </section>
+
+    </main>
+  </div>
+
+  <script>
+document.addEventListener('DOMContentLoaded', () => {
+  // store initial main HTML so we can restore Dashboard
+  const mainEl = document.querySelector('main');
+  const initialMainHTML = mainEl.innerHTML;
+
+  // Timesheet sample data
+  const sampleTimes = [
+    {d: '2025-11-30', in: '08:55', out: '18:03', h: 8.1, status: 'Approved'},
+    {d: '2025-11-29', in: '09:12', out: '17:58', h: 7.7, status: 'Approved'},
+    {d: '2025-11-28', in: '09:00', out: '18:22', h: 8.36, status: 'Pending'},
+    {d: '2025-11-27', in: '09:04', out: '17:50', h: 7.76, status: 'Approved'}
+  ];
+
+  // utility: mask/unmask text of elements without using backslash escapes
+  function maskElements(list) {
+    list.forEach(el => {
+      if (!el.dataset.realValue) el.dataset.realValue = el.textContent;
+      const chars = Array.from(el.textContent);
+      el.textContent = chars.map(c => c === ' ' ? ' ' : '*').join('');
+    });
+  }
+  function unmaskElements(list) {
+    list.forEach(el => {
+      if (el.dataset.realValue) el.textContent = el.dataset.realValue;
+    });
+  }
+
+  // render timesheets into current DOM (expects #timesheetBody to exist)
+  function renderTimesheets() {
+    const body = document.getElementById('timesheetBody');
+    if (!body) return;
+    body.innerHTML = '';
+    sampleTimes.forEach(r => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = '<td>' + r.d + '</td><td>' + r.in + '</td><td>' + r.out + '</td><td>' + r.h + '</td><td>' + r.status + '</td>';
+      body.appendChild(tr);
+    });
+  }
+
+  // initialize widgets inside main (called on load and when restoring Dashboard)
+  function initMainWidgets() {
+    renderTimesheets();
+
+    // clock button
+    const clockBtn = document.getElementById('clockBtn');
+    if (clockBtn) {
+      let clockedIn = false;
+      clockBtn.addEventListener('click', () => {
+        clockedIn = !clockedIn;
+        clockBtn.textContent = clockedIn ? 'Clock Out' : 'Clock In';
+        alert(clockedIn ? 'Clocked in at ' + new Date().toLocaleTimeString() : 'Clocked out at ' + new Date().toLocaleTimeString());
+      });
+    }
+
+    // hide/show pay summary (mask numeric values with asterisks)
+    const hidePayBtn = document.getElementById('hidePayBtn');
+    if (hidePayBtn) {
+      let hidden = false;
+      const paySelector = '.widget [style*="font-size:18px"], .col-span-4 table td:nth-child(2), .col-span-4 table td:nth-child(1), .card table td:nth-child(2)';
+      hidePayBtn.addEventListener('click', () => {
+        const elems = Array.from(document.querySelectorAll(paySelector)).filter(el => /[0-9]/.test(el.textContent));
+        hidden = !hidden;
+        if (hidden) maskElements(elems); else unmaskElements(elems);
+        hidePayBtn.textContent = hidden ? 'Show' : 'Hide';
+      });
+    }
+
+    // resources / list items open coming-soon modal instead of navigating
+    Array.from(document.querySelectorAll('.card a, .list-item')).forEach(el => {
+      el.addEventListener('click', (e) => {
+        if (e.target.tagName === 'BUTTON') return;
+        e.preventDefault();
+        showModal((el.textContent || el.innerText || 'Item').trim(), 'Coming soon — this content is a placeholder for testing.');
+      });
+    });
+  }
+
+  // create a reusable modal
+  function showModal(title, body) {
+    let backdrop = document.querySelector('.vh-modal-backdrop');
+    if (!backdrop) {
+      backdrop = document.createElement('div');
+      backdrop.className = 'vh-modal-backdrop';
+      backdrop.innerHTML = '<div class="vh-modal"><h3></h3><p></p><div class="actions"><button id="vhClose" class="btn">Close</button></div></div>';
+      document.body.appendChild(backdrop);
+      backdrop.addEventListener('click', (e) => { if (e.target === backdrop) hideModal(); });
+      backdrop.querySelector('#vhClose').addEventListener('click', hideModal);
+    }
+    backdrop.querySelector('h3').textContent = title;
+    backdrop.querySelector('p').textContent = body;
+    backdrop.classList.add('show');
+  }
+  function hideModal() { const b = document.querySelector('.vh-modal-backdrop'); if (b) b.classList.remove('show'); }
+
+  // dark mode switch (insert switch into topbar)
+  const topbarLeft = document.querySelector('.topbar > div');
+  if (topbarLeft) {
+    const switchWrap = document.createElement('div');
+    switchWrap.style.marginLeft = '12px';
+    switchWrap.innerHTML = '<label class="vh-switch" title="Toggle dark mode"><input id="dmSwitch" type="checkbox"><span class="slider"></span></label>';
+    topbarLeft.appendChild(switchWrap);
+    const dmSwitch = document.getElementById('dmSwitch');
+    dmSwitch.addEventListener('change', () => { document.body.classList.toggle('dark', dmSwitch.checked); });
+  }
+
+  // collapse sidebar logic
+  const sidebar = document.querySelector('.sidebar');
+  const collapseBtn = document.getElementById('collapseBtnToggle');
+  if (collapseBtn && sidebar) {
+    collapseBtn.style.border = 'none';
+    collapseBtn.style.background = 'transparent';
+    collapseBtn.style.padding = '8px';
+    collapseBtn.style.cursor = 'pointer';
+    collapseBtn.addEventListener('click', () => {
+      const collapsed = !sidebar.classList.contains('collapsed');
+      sidebar.classList.toggle('collapsed', collapsed);
+      Array.from(document.querySelectorAll('.nav a span')).forEach(s => s.style.display = collapsed ? 'none' : 'inline');
+      sidebar.style.width = collapsed ? '70px' : '260px';
+      collapseBtn.textContent = collapsed ? '➡ Expand' : '⬅ Collapse';
+    });
+  }
+
+  // navigation: clicking a sidebar item swaps main content to a coming-soon page
+  function loadComingSoonPage(title) {
+    mainEl.innerHTML = '<div style="padding:40px;text-align:center;">' +
+      '<h1 style="font-size:32px;margin-bottom:12px;">' + title + '</h1>' +
+      '<p style="font-size:18px;color:var(--muted)">Coming soon — this page is under development.</p>' +
+      '</div>';
+    window.scrollTo(0,0);
+  }
+  Array.from(document.querySelectorAll('.nav a')).forEach(a => {
+    a.addEventListener('click', (e) => {
+      e.preventDefault();
+      const span = a.querySelector('span');
+      const label = span ? span.textContent.trim() : a.textContent.trim();
+      Array.from(document.querySelectorAll('.nav a')).forEach(n => n.classList.remove('active'));
+      a.classList.add('active');
+      if (label === 'Dashboard') {
+        mainEl.innerHTML = initialMainHTML;
+        // re-initialize widgets inside the restored main
+        initMainWidgets();
+        return;
+      }
+      loadComingSoonPage(label);
+    });
+  });
+
+  // initial attach for main widgets
+  initMainWidgets();
+
+  // notifications mail icon behaviour
+  const notifBtn = document.querySelector('.topbar div[style*="width:42px"]');
+  if (notifBtn) {
+    notifBtn.setAttribute('role', 'button');
+    notifBtn.addEventListener('click', () => { showModal('Notifications', 'You have no new messages.'); });
+  }
+
+});
+</script>
+</body>
+</html>
